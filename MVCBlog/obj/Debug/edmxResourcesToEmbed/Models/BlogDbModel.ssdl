@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BlogDbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="BlogDbModelStoreContainer">
+    <EntitySet Name="PostSet" EntityType="BlogDbModel.Store.PostSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CategorySet" EntityType="BlogDbModel.Store.CategorySet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="PostCategory" Association="BlogDbModel.Store.PostCategory">
+      <End Role="Post" EntitySet="PostSet" />
+      <End Role="Category" EntitySet="CategorySet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="PostSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Category_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CategorySet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryName" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="PostCategory">
+    <End Role="Post" Type="BlogDbModel.Store.PostSet" Multiplicity="*" />
+    <End Role="Category" Type="BlogDbModel.Store.CategorySet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="Category_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

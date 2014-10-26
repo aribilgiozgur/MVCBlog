@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="BlogDbModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="BlogDbModelContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="PostSet" EntityType="BlogDbModel.Post" />
+    <EntitySet Name="CategorySet" EntityType="BlogDbModel.Category" />
+    <AssociationSet Name="PostCategory" Association="BlogDbModel.PostCategory">
+      <End Role="Post" EntitySet="PostSet" />
+      <End Role="Category" EntitySet="CategorySet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Title" Nullable="false" />
+    <Property Type="String" Name="Content" Nullable="false" />
+    <NavigationProperty Name="Category" Relationship="BlogDbModel.PostCategory" FromRole="Post" ToRole="Category" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="CategoryName" Nullable="false" />
+    <NavigationProperty Name="Posts" Relationship="BlogDbModel.PostCategory" FromRole="Category" ToRole="Post" />
+  </EntityType>
+  <Association Name="PostCategory">
+    <End Type="BlogDbModel.Post" Role="Post" Multiplicity="*" />
+    <End Type="BlogDbModel.Category" Role="Category" Multiplicity="1" />
+  </Association>
+</Schema>

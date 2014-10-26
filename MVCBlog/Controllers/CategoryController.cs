@@ -9,106 +9,104 @@ using MVCBlog.Models;
 
 namespace MVCBlog.Controllers
 {
-    public class PostController : Controller
+    public class CategoryController : Controller
     {
         private BlogDbModelContainer db = new BlogDbModelContainer();
 
         //
-        // GET: /Post/
+        // GET: /Category/
 
         public ActionResult Index()
         {
-            return View(db.PostSet.ToList());
+            return View(db.CategorySet.ToList());
         }
 
         //
-        // GET: /Post/Details/5
+        // GET: /Category/Details/5
 
         public ActionResult Details(int id = 0)
         {
-            Post post = db.PostSet.Find(id);
-            if (post == null)
+            Category category = db.CategorySet.Find(id);
+            if (category == null)
             {
                 return HttpNotFound();
             }
-            return View(post);
+            return View(category);
         }
 
         //
-        // GET: /Post/Create
+        // GET: /Category/Create
 
         public ActionResult Create()
         {
-            List<Category> categories = db.CategorySet.ToList();
-            ViewBag.Categories = categories;
             return View();
         }
 
         //
-        // POST: /Post/Create
+        // POST: /Category/Create
 
         [HttpPost]
-        public ActionResult Create(Post post, FormCollection col)
-        {
-            int categoryId = int.Parse(col.Get("Category"));
-            Category c = db.CategorySet.Where(ca => ca.Id == categoryId).SingleOrDefault();
-            post.Category = c;
-           
-                db.PostSet.Add(post);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-           
-        }
-
-        //
-        // GET: /Post/Edit/5
-
-        public ActionResult Edit(int id = 0)
-        {
-            Post post = db.PostSet.Find(id);
-            if (post == null)
-            {
-                return HttpNotFound();
-            }
-            return View(post);
-        }
-
-        //
-        // POST: /Post/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(Post post)
+        public ActionResult Create(Category category)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(post).State = EntityState.Modified;
+                db.CategorySet.Add(category);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(post);
+
+            return View(category);
         }
 
         //
-        // GET: /Post/Delete/5
+        // GET: /Category/Edit/5
 
-        public ActionResult Delete(int id = 0)
+        public ActionResult Edit(int id = 0)
         {
-            Post post = db.PostSet.Find(id);
-            if (post == null)
+            Category category = db.CategorySet.Find(id);
+            if (category == null)
             {
                 return HttpNotFound();
             }
-            return View(post);
+            return View(category);
         }
 
         //
-        // POST: /Post/Delete/5
+        // POST: /Category/Edit/5
+
+        [HttpPost]
+        public ActionResult Edit(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(category).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(category);
+        }
+
+        //
+        // GET: /Category/Delete/5
+
+        public ActionResult Delete(int id = 0)
+        {
+            Category category = db.CategorySet.Find(id);
+            if (category == null)
+            {
+                return HttpNotFound();
+            }
+            return View(category);
+        }
+
+        //
+        // POST: /Category/Delete/5
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Post post = db.PostSet.Find(id);
-            db.PostSet.Remove(post);
+            Category category = db.CategorySet.Find(id);
+            db.CategorySet.Remove(category);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
